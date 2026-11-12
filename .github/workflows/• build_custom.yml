@@ -6,18 +6,21 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: inavflight/inav-build:latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Install toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-arm-none-eabi cmake ninja-build
 
       - name: Build firmware
         run: |
           mkdir -p build
           cd build
-          cmake ..
-          make HW_F7_CUSTOM -j$(nproc)
+          cmake -GNinja ..
+          ninja HW_F7_CUSTOM
 
       - name: Upload HEX file
         uses: actions/upload-artifact@v4
