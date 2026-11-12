@@ -1,0 +1,26 @@
+name: Build Custom HW F7
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: inavflight/inav-build:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build firmware
+        run: |
+          mkdir -p build
+          cd build
+          cmake ..
+          make HW_F7_CUSTOM -j$(nproc)
+
+      - name: Upload HEX file
+        uses: actions/upload-artifact@v4
+        with:
+          name: HW_F7_CUSTOM-firmware
+          path: build/bin/*.hex
