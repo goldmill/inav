@@ -1,1 +1,1 @@
-target_stm32f722xg(HW_F7_CUSTOM)
+target_stm32f722xe(HW_F7_CUSTOM)
